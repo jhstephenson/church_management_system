@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Callings</h1>
+
+<div class="mb-3">
+    <a href="{% url 'calling_create' %}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> New Calling
+    </a>
+    <form method="get" action="{% url 'calling_list' %}" class="d-inline-block ms-3">
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="showAllToggle" name="show_all" {% if show_all %}checked{% endif %} onchange="this.form.submit()">
+            <label class="form-check-label" for="showAllToggle">Show all callings</label>
+        </div>
+    </form>
+</div>
+
+{% if callings %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Unit</th>
+                <th>Organization</th>
+                <th>Position</th>
+                <th>Person Being Called</th>
+                <th>Date Called</th>
+                <th>LCR Updated</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for calling in callings %}
+            <tr>
+                <td>{{ calling.unit|default_if_none:"-" }}</td>
+                <td>{{ calling.organization|default_if_none:"-" }}</td>
+                <td>{{ calling.position|default_if_none:"-" }}</td>
+                <td>{{ calling.person_being_called }}</td>
+                <td>{{ calling.date_called|date:"Y-m-d"|default_if_none:"-" }}</td>
+                <td>
+                    {% if calling.leader_and_clerk_resources_updated %}
+                        <i class="fas fa-check text-success"></i>
+                    {% else %}
+                        <i class="fas fa-times text-danger"></i>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'calling_detail' calling.pk %}" class="btn btn-sm btn-info" title="View">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <a href="{% url 'calling_update' calling.pk %}" class="btn btn-sm btn-warning" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="{% url 'calling_delete' calling.pk %}" class="btn btn-sm btn-danger" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if callings.paginator.num_pages > 1 %}
+    <nav aria-label="Calling list pagination">
+        <ul class="pagination justify-content-center">
+            {% if callings.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ callings.previous_page_number }}{% if show_all %}&show_all=on{% endif %}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link" aria-hidden="true">&laquo;</span>
+                </li>
+            {% endif %}
+
+            {% for i in callings.paginator.page_range %}
+                {% if callings.number == i %}
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">{{ i }}</span>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ i }}{% if show_all %}&show_all=on{% endif %}">{{ i }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if callings.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ callings.next_page_number }}{% if show_all %}&show_all=on{% endif %}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link" aria-hidden="true">&raquo;</span>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+{% else %}
+    <p>No callings found.</p>
+{% endif %}
+
+{% endblock %}

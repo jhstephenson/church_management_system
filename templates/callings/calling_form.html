@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1>{% if form.instance.pk %}Edit{% else %}New{% endif %} Calling</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.unit|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.organization|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.position|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.person_being_released|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.released_by|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.released_date|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.person_being_called|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.home_unit|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.presidency_approved|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            {{ form.unit_leader_to_be_consulted_by|as_crispy_field }}
+        </div>
+        <div class="col-md-6">
+            {{ form.leadership_consulted|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.high_council_approved|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.called_by|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.date_called|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.date_sustained|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.date_set_apart|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.leader_and_clerk_resources_updated|as_crispy_field }}
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="{% url 'calling_list' %}" class="btn btn-secondary">Cancel</a>
+    <div class="modal fade" id="newPositionModal" tabindex="-1" aria-labelledby="newPositionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="newPositionModalLabel">Add New Position</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <input type="text" id="newPositionName" class="form-control" placeholder="Enter new position name">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="saveNewPosition">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const positionSelect = document.getElementById('id_position');
+          const newOption = document.createElement('option');
+          newOption.value = 'new';
+          newOption.text = '+ Add New Position';
+          positionSelect.add(newOption);
+      
+          positionSelect.addEventListener('change', function() {
+              if (this.value === 'new') {
+                  const modal = new bootstrap.Modal(document.getElementById('newPositionModal'));
+                  modal.show();
+                  this.value = '';
+              }
+          });
+      
+          document.getElementById('saveNewPosition').addEventListener('click', function() {
+            const newPositionName = document.getElementById('newPositionName').value;
+            if (newPositionName) {
+                fetch('{% url "create_reference" "position" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({name: newPositionName})
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => Promise.reject(data));
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.id) {
+                        const newOption = document.createElement('option');
+                        newOption.value = data.id;
+                        newOption.text = data.name;
+                        positionSelect.add(newOption, positionSelect.options[positionSelect.options.length - 1]);
+                        positionSelect.value = data.id;
+                        bootstrap.Modal.getInstance(document.getElementById('newPositionModal')).hide();
+                        document.getElementById('newPositionName').value = '';
+                    } else {
+                        throw new Error('Unexpected response format');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error creating new position: ' + JSON.stringify(error));
+                });
+            } else {
+                alert('Please enter a position name');
+            }
+        });
+      });
+    </script>
+
+</form>
+
+{% endblock %}

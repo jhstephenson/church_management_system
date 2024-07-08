@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Calling Details</h1>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <p><strong>Unit:</strong> {{ calling.unit|default_if_none:"-" }}</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Organization:</strong> {{ calling.organization|default_if_none:"-" }}</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Position:</strong> {{ calling.position|default_if_none:"-" }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <p><strong>Person Being Released:</strong> {{ calling.person_being_released|default_if_none:"-" }}</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Released By:</strong> {{ calling.released_by|default_if_none:"-" }}</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Released Date:</strong> {{ calling.released_date|date:"Y-m-d"|default_if_none:"-" }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <p><strong>Person Being Called:</strong> {{ calling.person_being_called }}</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Home Unit:</strong> {{ calling.home_unit|default_if_none:"-" }}</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Presidency Approved:</strong> {{ calling.presidency_approved|yesno:"Yes,No" }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Unit Leader To Be Consulted By:</strong> {{ calling.unit_leader_to_be_consulted_by|default_if_none:"-" }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Leadership Consulted:</strong> {{ calling.leadership_consulted|yesno:"Yes,No" }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <p><strong>High Council Approved:</strong> {{ calling.high_council_approved|date:"Y-m-d"|default_if_none:"-" }}</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Called By:</strong> {{ calling.called_by|default_if_none:"-" }}</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Date Called:</strong> {{ calling.date_called|date:"Y-m-d"|default_if_none:"-" }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <p><strong>Date Sustained:</strong> {{ calling.date_sustained|date:"Y-m-d"|default_if_none:"-" }}</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Date Set Apart:</strong> {{ calling.date_set_apart|date:"Y-m-d"|default_if_none:"-" }}</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Leader and Clerk Resources Updated:</strong> {{ calling.leader_and_clerk_resources_updated|yesno:"Yes,No" }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a href="{% url 'calling_update' calling.pk %}" class="btn btn-primary">Edit</a>
+    <a href="{% url 'calling_list' %}" class="btn btn-secondary">Back to List</a>
+</div>
+
+{% endblock %}
