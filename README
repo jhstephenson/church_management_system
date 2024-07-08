@@ -1,0 +1,166 @@
+# Church Management System
+
+## Overview
+This Django-based Church Management System is designed to track assignments to service activities within a church. It provides a user-friendly interface for managing callings, including creating, viewing, updating, and deleting calling records.
+
+## Features
+- User authentication system
+- CRUD operations for church callings
+- Filtering system to view all callings or only those pending resource updates
+- Pagination for efficient browsing of calling records
+- Reference data management for Units, Organizations, Positions, and Leadership
+- Responsive design using Bootstrap and FontAwesome
+
+## Technologies Used
+- Python 3.x
+- Django 5.x
+- PostgreSQL
+- Bootstrap 5
+- FontAwesome
+
+## Environment Setup
+
+This project uses a Python virtual environment that is set up outside of the project root directory. Follow these steps to create and activate the virtual environment:
+
+1. Navigate to the directory where you want to create the virtual environment. This should be outside the project root. For example:
+
+  ```
+  cd /path/to/your/directory
+  ```
+
+2. Run the following command to create and activate the virtual environment:
+
+  ```
+  python -m venv venv
+  source venv/bin/activate
+  ```
+
+3. Activate the virtual environment:
+- On Windows:
+  ```
+  church_mgt_env\Scripts\activate
+  ```
+- On macOS and Linux:
+  ```
+  source church_mgt_env/bin/activate
+  ```
+
+4. Your command prompt should now show the name of the virtual environment, indicating it's active.
+
+5. Navigate back to the project root:
+
+  ```
+  cd /path/to/your/director/church_mgt_project
+  ```
+
+6. Run the following command to install the required dependencies:
+
+  ```
+  pip install -r requirements.txt
+  ```
+
+7. Your project should now be ready to use.
+
+Remember to activate this virtual environment each time you work on the project. When you're done, you can deactivate the environment by simply running:
+
+  ```
+  deactivate
+  ```
+
+## Environment Variables
+
+This project uses environment variables for configuration. Follow these steps to set up your environment:
+
+1. Copy the `.env.example` file to a new file named `.env`:
+
+2. Open the `.env` file and fill in the values for each variable:
+- `SECRET_KEY`: A long, random string for Django's secret key
+- `DEBUG`: Set to `True` for development, `False` for production
+- `DB_NAME`: Your PostgreSQL database name
+- `DB_USER`: Your PostgreSQL username
+- `DB_PASSWORD`: Your PostgreSQL password
+- `DB_HOST`: Database host (usually `localhost` for development)
+- `DB_PORT`: Database port (usually `5432` for PostgreSQL)
+
+Note: Never commit your `.env` file to version control.
+
+## Setup and Installation
+
+1. Clone the repository:  
+
+git clone https://github.com/jhstephenson/church-management-system.git
+cd church-management-system
+
+2. Set up and activate the virtual environment as described in the "Environment Setup" section.
+
+3. Install the required packages:
+
+  pip install -r requirements.txt
+
+4. Set up the environment variables as described in the "Environment Variables" section.
+
+5. Set up the PostgreSQL database and ensure the credentials match those in your `.env` file.
+
+6. Apply the migrations:
+
+  python manage.py migrate
+
+7. Create a superuser:
+
+  python manage.py createsuperuser
+
+8. Run the server:
+
+  python manage.py runserver
+
+9. Access the application at `http://localhost:8000`
+
+## Usage
+
+1. Log in using your superuser credentials.
+2. Use the navigation bar to access different sections of the application.
+3. Click on 'Admin' to access the admin interface.
+4. Click on the 'Units', 'Organizations', 'Positions', and 'Leadership' tabs to view and manage reference data.
+
+4. To create a new calling, click on the "New Calling" button on the calling list page.
+5. Use the toggle switch on the calling list page to filter between all callings and those pending resource updates.
+6. Click on the action icons next to each calling to view details, edit, or delete the calling.
+7. Access the admin interface by clicking "Admin" in the navigation bar (superuser only).
+
+## Contributing
+
+Contributions to improve the Church Management System are welcome. Please follow these steps to contribute:
+
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature-branch`)
+3. Make your changes and commit them (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin feature-branch`)
+5. Create a new Pull Request
+
+## License
+
+MIT License
+
+Copyright (c) 2024 James Stephenson, PhD  Stephenson Computer Consulting, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+## Contact
+
+For any queries or support, please contact James Stephenson, PhD at jstephen@scc-i.com.
